@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.text.method.TransformationMethod;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +47,9 @@ public class AutoFitButton extends Button {
         CharSequence cs = this.getText();
         if (cs != null) {
             this.text = this.getText().toString();
-            //this.setText("");
+            if(this.getTransformationMethod() != null) {
+                this.text = this.getTransformationMethod().getTransformation(getText(), this).toString();
+            }
         }
         this.textSize = this.getTextSize();
         textPaint = new Paint();
@@ -86,7 +90,7 @@ public class AutoFitButton extends Button {
             }
         }
 
-        this.setTextSize(((this.textSize -1) / getResources().getDisplayMetrics().density));
+        this.setTextSize(((this.textSize -1f) / getResources().getDisplayMetrics().density));
         this.forceLayout();
     }
 

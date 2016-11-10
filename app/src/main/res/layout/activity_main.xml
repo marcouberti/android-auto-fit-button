@@ -11,7 +11,6 @@
         android:id="@+id/normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
         android:textSize="10sp"
         android:drawableLeft="@mipmap/ic_launcher"
         android:text="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
@@ -22,7 +21,6 @@
         android:layout_height="150dp"
         android:textSize="60sp"
         android:padding="20dp"
-        android:textAllCaps="false"
         android:drawableLeft="@mipmap/ic_launcher"
         android:drawableRight="@mipmap/ic_launcher"
         android:text="AAaaaaaaaaaaaaaaaaaaaaaaaaaFaaaXXXXXXXXXXXZZ"/>
@@ -40,29 +38,25 @@
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:textSize="66sp"
-            android:textAllCaps="false"
             android:drawableLeft="@mipmap/ic_launcher"
-            android:text="AUTOAAsAAAAA"/>
+            android:text="AUTO"/>
         <com.marcouberti.autofitbutton.AutoFitButton
             android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="150dp"
-            android:textAllCaps="false"
             android:text="AUTOFIT BUTTON"/>
         <com.marcouberti.autofitbutton.AutoFitButton
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="150dp"
-            android:textAllCaps="false"
             android:textSize="30sp"
-            android:text="AUTO FIT 1234567890'122334XXXXXXXXXXXXXXXXXXXXXXXX"/>
+            android:text="CANCELLARE"/>
     </LinearLayout>
 
     <com.marcouberti.autofitbutton.AutoFitButton
         android:layout_below="@+id/normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
         android:drawableRight="@mipmap/ic_launcher"
         android:text="MY BUTTON with an extra long description oh yeahhh"/>
 </LinearLayout>
