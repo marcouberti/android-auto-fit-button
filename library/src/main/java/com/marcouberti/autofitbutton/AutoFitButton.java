@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.Html;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -25,8 +26,6 @@ public class AutoFitButton extends Button {
 
     private String text = "";
     private float textSize;
-    private Paint textPaint;
-    private int ldw = 0, rdw = 0;
 
     public AutoFitButton(Context context) {
         super(context);
@@ -52,17 +51,32 @@ public class AutoFitButton extends Button {
             }
         }
         this.textSize = this.getTextSize();
-        textPaint = new Paint();
+    }
+
+    @Override
+    protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
+        super.onTextChanged(text, start, lengthBefore, lengthAfter);
+        this.text = text.toString();
+        setBestTextSize(getInnerWidth());
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
+        int innerWidth = getInnerWidth();
+        setBestTextSize(innerWidth);
+    }
+
+    private int getInnerWidth() {
+        //Compute the available inner space for text
+        //consider: - padding
+        //          - drawables
         Drawable[] drawable = getCompoundDrawables();//left, top, right, and bottom
         Drawable leftDrawable = drawable[0];
         Drawable rightDrawable = drawable[2];
 
+        int ldw = 0, rdw = 0;
         if(leftDrawable != null) {
             ldw = leftDrawable.getMinimumWidth() + this.getCompoundDrawablePadding();
         }
@@ -71,64 +85,33 @@ public class AutoFitButton extends Button {
             rdw = rightDrawable.getMinimumWidth() + this.getCompoundDrawablePadding();
         }
 
-        int innerWidth = w - getPaddingLeft() - getPaddingRight() - ldw - rdw;
-        setBestTextSize(innerWidth);
+        int innerWidth = getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - ldw - rdw;
+        return innerWidth;
     }
 
     private void setBestTextSize(int innerWidth) {
+        if(innerWidth <= 0) return;
+
         this.textSize = this.getTextSize();
 
-        Paint paint = this.getPaint();
-        float textWidth = paint.measureText(this.text);
-        while (textWidth >= innerWidth && this.textSize > 0) {
+        TextPaint paint = this.getPaint();
+        boolean found = false;
+        while (!found && this.textSize > 0) {
             paint.setTextSize(this.textSize);
-            textWidth = paint.measureText(this.text);
-            if(textWidth <= innerWidth) {
-                break;
+            CharSequence charSequence;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                charSequence = Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT);
+            }else {
+                charSequence = Html.fromHtml(this.text);
+            }
+            StaticLayout sl = new StaticLayout(charSequence, paint, innerWidth, Layout.Alignment.ALIGN_CENTER, 0, 0, true);
+            if(sl.getLineCount() <= 1) {
+                found = true;
             }else {
                 this.textSize -= 1f;
             }
         }
 
         this.setTextSize(((this.textSize -1f) / getResources().getDisplayMetrics().density));
-        this.forceLayout();
-    }
-
-    private final Rect textBounds = new Rect();
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        int textColor;
-        //DISABLED
-        if(!isEnabled()) {
-            int[] states = new int[] {-android.R.attr.state_enabled};
-            textColor = getTextColors().getColorForState(states, Color.BLACK);
-        }
-        //PRESSED
-        else if(isPressed()) {
-            int[] states = new int[] {android.R.attr.state_pressed};
-            textColor = getTextColors().getColorForState(states, Color.BLACK);
-        }
-        //FOCUSED
-        else if(isFocused()) {
-            int[] states = new int[] {android.R.attr.state_focused};
-            textColor = getTextColors().getColorForState(states, Color.BLACK);
-        }
-        //NORMAL
-        else {
-            int[] states = new int[] {android.R.attr.state_enabled};
-            textColor = getTextColors().getColorForState(states, Color.BLACK);
-        }
-
-        textPaint.getTextBounds(this.text, 0, text.length(), textBounds);
-
-        textPaint.setTypeface(this.getTypeface());
-        textPaint.setColor(Color.RED);
-        textPaint.setTextSize(this.textSize);
-        textPaint.setTextAlign(Paint.Align.CENTER);
-
-        int innerWidth = getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - ldw - rdw;
-        canvas.drawText(this.text, getPaddingLeft() + ldw + innerWidth/2f, getMeasuredHeight() / 2.0f - textBounds.exactCenterY(), textPaint);
     }
 }

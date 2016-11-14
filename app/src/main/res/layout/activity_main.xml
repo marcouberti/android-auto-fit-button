@@ -23,7 +23,7 @@
         android:padding="20dp"
         android:drawableLeft="@mipmap/ic_launcher"
         android:drawableRight="@mipmap/ic_launcher"
-        android:text="AAaaaaaaaaaaaaaaaaaaaaaaaaaFaaaXXXXXXXXXXXZZ"/>
+        android:text="AAaaaaaaaaaaaaaaaaaaaaaGGaaaaFaaaXXXXXXXXXXXZZ"/>
 
 
     <LinearLayout
@@ -55,8 +55,8 @@
 
     <com.marcouberti.autofitbutton.AutoFitButton
         android:layout_below="@+id/normal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableRight="@mipmap/ic_launcher"
-        android:text="MY BUTTON with an extra long description oh yeahhh"/>
+        android:text="MY BUTTON sdsd"/>
 </LinearLayout>
