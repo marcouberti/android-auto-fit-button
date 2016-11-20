@@ -1,6 +1,7 @@
 package com.marcouberti.autofitbutton;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -25,7 +26,7 @@ import android.widget.Button;
 public class AutoFitButton extends Button {
 
     private String text = "";
-    private float textSize;
+    private float textSize, minTextSize, maxTextSize;
 
     public AutoFitButton(Context context) {
         super(context);
@@ -34,11 +35,17 @@ public class AutoFitButton extends Button {
 
     public AutoFitButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.AutoFitButton,
+                0, 0);
 
-    public AutoFitButton(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        try {
+            maxTextSize = a.getDimensionPixelSize(R.styleable.AutoFitButton_maxTextSize, -1);
+            minTextSize = a.getDimensionPixelSize(R.styleable.AutoFitButton_minTextSize, -1);
+        } finally {
+            a.recycle();
+        }
         init();
     }
 
@@ -96,7 +103,7 @@ public class AutoFitButton extends Button {
 
         TextPaint paint = this.getPaint();
         boolean found = false;
-        while (!found && this.textSize > 0) {
+        while (!found && this.textSize > 0 && this.textSize >= this.minTextSize) {
             paint.setTextSize(this.textSize);
             CharSequence charSequence;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
