@@ -26,7 +26,7 @@ import android.widget.Button;
 public class AutoFitButton extends Button {
 
     private String text = "";
-    private float textSize, minTextSize, maxTextSize;
+    private float textSize, minTextSize;
 
     public AutoFitButton(Context context) {
         super(context);
@@ -41,7 +41,6 @@ public class AutoFitButton extends Button {
                 0, 0);
 
         try {
-            maxTextSize = a.getDimensionPixelSize(R.styleable.AutoFitButton_maxTextSize, -1);
             minTextSize = a.getDimensionPixelSize(R.styleable.AutoFitButton_minTextSize, -1);
         } finally {
             a.recycle();
@@ -120,5 +119,9 @@ public class AutoFitButton extends Button {
         }
 
         this.setTextSize(((this.textSize -1f) / getResources().getDisplayMetrics().density));
+    }
+
+    public float getMinTextSize() {
+        return minTextSize;
     }
 }
