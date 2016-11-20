@@ -15,7 +15,9 @@ import android.text.TextPaint;
 import android.text.method.TransformationMethod;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 /**
  * AutoFitButton
@@ -63,7 +65,9 @@ public class AutoFitButton extends Button {
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
         this.text = text.toString();
-        setBestTextSize(getInnerWidth());
+        if(lengthBefore != lengthAfter) {
+            setBestTextSize(getInnerWidth());
+        }
     }
 
     @Override
@@ -101,6 +105,7 @@ public class AutoFitButton extends Button {
         this.textSize = this.getTextSize();
 
         TextPaint paint = this.getPaint();
+        StaticLayout sl;
         boolean found = false;
         while (!found && this.textSize > 0 && this.textSize >= this.minTextSize) {
             paint.setTextSize(this.textSize);
@@ -110,7 +115,7 @@ public class AutoFitButton extends Button {
             }else {
                 charSequence = Html.fromHtml(this.text);
             }
-            StaticLayout sl = new StaticLayout(charSequence, paint, innerWidth, Layout.Alignment.ALIGN_CENTER, 0, 0, true);
+            sl = new StaticLayout(charSequence, paint, innerWidth, Layout.Alignment.ALIGN_CENTER, 0, 0, true);
             if(sl.getLineCount() <= 1) {
                 found = true;
             }else {
