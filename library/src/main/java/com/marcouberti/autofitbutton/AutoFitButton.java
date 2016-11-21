@@ -13,7 +13,7 @@ import android.widget.Button;
 /**
  * AutoFitButton
  * Created by Marco on 04/11/2016.
- * Copyright © 2016 Neato Robotics. All rights reserved.
+ * Copyright © 2016 Marco Uberti.
  */
 
 public class AutoFitButton extends Button {
