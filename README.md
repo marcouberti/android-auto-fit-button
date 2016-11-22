@@ -2,7 +2,7 @@
 
 Android Auto Fit Button extends the standard Button widget and allows to fit the button into one single line.
 
-![](https://raw.githubusercontent.com/marcouberti/android-auto-fit-button/master/images/screen.png)  
+![](https://raw.githubusercontent.com/marcouberti/android-auto-fit-button/master/images/screen2.png)  
 
 ## Setup
 
