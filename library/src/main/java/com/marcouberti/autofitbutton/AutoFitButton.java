@@ -18,7 +18,7 @@ import android.widget.Button;
 
 public class AutoFitButton extends Button {
 
-    private String text = "";
+    private CharSequence text = "";
     private float textSize, minTextSize;
 
     public AutoFitButton(Context context) {
@@ -44,9 +44,9 @@ public class AutoFitButton extends Button {
     private void init() {
         CharSequence cs = this.getText();
         if (cs != null) {
-            this.text = this.getText().toString();
+            this.text = this.getText();
             if(this.getTransformationMethod() != null) {
-                this.text = this.getTransformationMethod().getTransformation(getText(), this).toString();
+                this.text = this.getTransformationMethod().getTransformation(getText(), this);
             }
         }
         this.textSize = this.getTextSize();
@@ -55,7 +55,7 @@ public class AutoFitButton extends Button {
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
-        this.text = text.toString();
+        this.text = text;
         if(lengthBefore != lengthAfter) {
             setBestTextSize(getInnerWidth());
         }
@@ -100,13 +100,7 @@ public class AutoFitButton extends Button {
         boolean found = false;
         while (!found && this.textSize > 0 && this.textSize >= this.minTextSize) {
             paint.setTextSize(this.textSize);
-            CharSequence charSequence;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                charSequence = Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT);
-            }else {
-                charSequence = Html.fromHtml(this.text);
-            }
-            sl = new StaticLayout(charSequence, paint, innerWidth, Layout.Alignment.ALIGN_CENTER, 0, 0, true);
+            sl = new StaticLayout(this.text, paint, innerWidth, Layout.Alignment.ALIGN_CENTER, 0, 0, true);
             if(sl.getLineCount() <= 1) {
                 found = true;
             }else {
