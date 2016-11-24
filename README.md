@@ -24,7 +24,7 @@ Add this to your app *build.gradle* file:
 ``` groovy
 dependencies {
     ...
-    compile 'com.marcouberti.autofitbutton:android-auto-fit-button:0.1.0@aar'
+    compile 'com.marcouberti.autofitbutton:android-auto-fit-button:0.1.1@aar'
     ...
 }
 ```
